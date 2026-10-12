@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026/115寒假轉學考簡章與時程總整理</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #f8fafc;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .school-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .school-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Main Hero Banner -->
+    <section class="relative bg-gradient-to-b from-blue-950 via-slate-900 to-slate-900 text-white py-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <span class="inline-flex items-center gap-1.5 bg-amber-500/20 border border-amber-400/30 text-amber-300 text-xs font-medium px-3.5 py-1.5 rounded-full mb-6 backdrop-blur-md">
+                <i class="fa-solid fa-bullhorn text-amber-400"></i> 最新招生資訊彙整
+            </span>
+            <h2 class="text-3xl sm:text-5xl font-black tracking-tight mb-4 leading-tight">
+                2026/115 寒假轉學考簡章 <br class="hidden sm:inline"/><span class="bg-gradient-to-r from-blue-400 to-indigo-300 bg-clip-text text-transparent">與時程總整理</span>
+            </h2>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto mb-8 font-light">
+                下列寒轉時程為示範範例，實際日期與細節請依各校最新發布之寒假轉學考簡章為準。
+            </p>
+
+            <!-- Search Bar -->
+            <div class="relative max-w-xl mx-auto">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="text" id="searchInput" placeholder="輸入學校名稱快速搜尋（例如：清華大學、成功大學、中國醫...）" 
+                    class="w-full pl-11 pr-4 py-3.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white/15 transition shadow-lg text-sm sm:text-base">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
+        
+        <!-- Filter Category Tabs / Counters -->
+        <div class="flex flex-wrap items-center justify-between mb-6 gap-4 border-b border-slate-200 pb-4">
+            <div class="flex items-center space-x-3">
+                <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-university text-blue-600"></i> 學校簡章列表
+                </h3>
+                <span id="schoolCount" class="text-xs font-semibold bg-slate-200 text-slate-700 px-2.5 py-1 rounded-full">載入中...</span>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- 圓點提示 -->
+                <div class="flex items-center gap-3 text-xs text-slate-600 font-medium bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-sm">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm"></span> 有考筆試 (跳色)
+                    </span>
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm"></span> 一般書審
+                    </span>
+                </div>
+
+                <div class="flex items-center space-x-1 text-sm text-slate-500 pl-2 border-l border-slate-300">
+                    <button id="cardViewBtn" onclick="toggleView('card')" class="p-2 rounded-lg bg-blue-600 text-white transition shadow-sm" title="卡片檢視">
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                    <button id="tableViewBtn" onclick="toggleView('table')" class="p-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition shadow-sm" title="表格檢視">
+                        <i class="fa-solid fa-table"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Results Found Message -->
+        <div id="noResults" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <div class="w-16 h-16 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-face-frown"></i>
+            </div>
+            <h4 class="text-lg font-bold text-slate-800 mb-1">找不到符合條件的學校</h4>
+            <p class="text-slate-500 text-sm">請嘗試更換關鍵字或清除搜尋條件重新查詢。</p>
+            <button onclick="clearSearch()" class="mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 transition shadow-md shadow-blue-600/20">
+                清除搜尋
+            </button>
+        </div>
+
+        <!-- Card Grid Container -->
+        <div id="cardContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- JavaScript will populate cards here -->
+        </div>
+
+        <!-- Table Container -->
+        <div id="tableContainer" class="hidden overflow-x-auto bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <table class="w-full text-center border-collapse">
+                <thead>
+                    <tr class="bg-blue-50 text-blue-900 border-b border-blue-200 text-xs md:text-sm font-bold">
+                        <th class="py-4 px-4">學校名稱</th>
+                        <th class="py-4 px-4">報名時間</th>
+                        <th class="py-4 px-4">書審截止</th>
+                        <th class="py-4 px-4">筆試/面試時間</th>
+                        <th class="py-4 px-4">寒轉簡章</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody" class="divide-y divide-slate-100 text-sm text-slate-700">
+                    <!-- JavaScript will populate rows here -->
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3">
+            <p class="text-sm">
+                實際日期與細節請依各校最新發布之寒假轉學考簡章為準。建議報名前一週再次確認官方簡章。
+            </p>
+            <p class="text-xs text-slate-500">
+                © 2026/115 寒假轉學考簡章與時程總整理
+            </p>
+        </div>
+    </footer>
+
+    <!-- Data and App Logic Script -->
+    <script>
+        const schoolsData = [
+            { name: "清華大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1xWPvmSu2zt4wxw6-g0rwb9Zf8xvfGtev/view?usp=sharing" },
+            { name: "成功大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1PghPhFvplfa9hFBNEIXDSY6D_f4XacDT/view?usp=sharing" },
+            { name: "中興大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1-5or7LWCmPPfQMr8bXAymd2-mv8m-HkY/view?usp=sharing" },
+            { name: "陽明交大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/10TgEOlI3g4B5uB7IT2zHF7LczhTv0E3k/view?usp=sharing" },
+            { name: "中山大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1kDSUIWBiIoaiMUDlaNxlPx1zRAQlVSGR/view?usp=sharing" },
+            { name: "台灣海洋大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/12aITpxc1hKEoJZyr3xOkpCx0VdRBVPCc/view?usp=sharing" },
+            { name: "高雄師範", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1P2Ab_w5pgwsLmhApv5MT8QGJ6zpBqCon/view?usp=sharing" },
+            { name: "彰化師範", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1123rpP3MZ5fC7UqTsovOxv0ipRxkEaDG/view?usp=sharing" },
+            { name: "嘉義大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1Jo7DsFzYosuZnW2PDGsBc9ZmJmz-SFUy/view?usp=sharing" },
+            { name: "高雄大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/11F4iotDNwjsyR5dTF3ROrWfYbgzg-cLr/view?usp=sharing" },
+            { name: "東華大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1scViiYF56MqGPay4hWLiMY867UF72CGE/view?usp=sharing" },
+            { name: "暨南大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1e1nWWEZPy960O27SDA5-q-cSVibpwvLe/view?usp=sharing" },
+            { name: "台灣體育", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1LBAunmQTyUhN-93Esqp1vmuhtUR1iH9k/view?usp=sharing" },
+            { name: "台東大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/11NJYxKGhDmRzuY31jjpKAv_gDaDInf07/view?usp=sharing" },
+            { name: "宜蘭大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1Gj76vKl4TS_vsSv0lPHRNSLLFwZR3DQ2/view?usp=sharing" },
+            { name: "東海大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1dWXlVfRXCmaVcsoqvA9PPC8Vlc9LbQhN/view?usp=sharing" },
+            { name: "台南大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1iNumhGby3B8r4O8tNs3qt64U-vSCTNKZ/view?usp=sharing" },
+            { name: "逢甲大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1ssJSppkq7OcEw0tPmwJg2WpLhWN8vAE7/view?usp=sharing" },
+            { name: "靜宜大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1T7CzZ3XTPkWh76viSKO4N58La9-TFFjQ/view?usp=sharing" },
+            { name: "體育大學*", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1zvowV79ZSEXJ6mrrzGo5ua599Q62MizR/view?usp=sharing" },
+            { name: "金門大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1xs2d4jxBd1kcX9hXxApe4cWnjhT2_K-W/view?usp=sharing" },
+            { name: "中山醫", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/14xfc2qJXH2dEHCSoxf1GteWl03Gq-JGG/view?usp=sharing" },
+            { name: "中國醫", reg: "11.12〜11.17", docDeadline: "詳見簡章", exam: "116.01.10", hasExam: true, link: "https://drive.google.com/file/d/1qwnmBP_GoJYWLVFLBbXTuLDASkEqVKU4/view?usp=sharing" },
+            { name: "屏東大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1tdC_SsI5GaKQnwexIHvmyQPdGBkYcQKK/view?usp=sharing" },
+            { name: "亞洲大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1vxhlrtdkWVViwCun13gZS98xwtP1zyKg/view?usp=sharing" },
+            { name: "輔仁大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1ruyV71GBcwn2466QxQuX2FZy-KyVScNX/view?usp=sharing" },
+            { name: "北市大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1cR2Tj4Pft7rZmIyxRy8uQ-CVw0w8kuJe/view?usp=sharing" },
+            { name: "中原大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1KwCjlx9LpNN9IkQhvVhF7xmLofaexm0d/view?usp=sharing" },
+            { name: "淡江大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1tBOrnV6DpckjkjUmP-phpSOFrm7LbKxx/view?usp=sharing" },
+            { name: "東吳大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1CM1hFOcEVLbJeTGBBspCTagHTnPt-Qva/view?usp=sharing" },
+            { name: "長庚大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1qUqDjoSpZ4JJXvze94-VmA1Wd6YBPvSD/view?usp=sharing" },
+            { name: "元智大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1hm8QaqkZvAwQomQIS6V86ehqiqdUrGZW/view?usp=sharing" },
+            { name: "中華大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1hm8QaqkZvAwQomQIS6V86ehqiqdUrGZW/view?usp=sharing" },
+            { name: "華梵大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1d48z7ANGQ3f-LTbXzhzmCXzhEJhhV9Nm/view?usp=sharing" },
+            { name: "義守大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/171k3TOzzqXRRk5QtVli2q9X7uNgSqvDX/view?usp=sharing" },
+            { name: "文化大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1VRPA6owxKYq4usliY_yF6lEm5MSzB89x/view?usp=sharing" },
+            { name: "世新大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1Se6u5LZHfeRFXynUgmhbLL6ynGH8c1M0/view?usp=sharing" },
+            { name: "銘傳大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1s8pdjyjoWuiaEKrVgqOAQ_iqbCFzS82W/view?usp=sharing" },
+            { name: "高醫大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1WOMEIFWrhJX01DmEphj_XxX2XVvebkDW/view?usp=sharing" },
+            { name: "南華大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1dWgX3Xj6Z6GJvpPelTCcZHcVzjefWEk7/view?usp=sharing" },
+            { name: "真理大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1dgi7ZkhEpDZZlOafWfH8tG6QlfvtG2Ir/view?usp=sharing" },
+            { name: "實踐(北)", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1_g7Q7CngscaGcW4Hrgz8-2krEu6cTppg/view?usp=sharing" },
+            { name: "實踐(南)", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1EtUCnFZ2dsXliQsF_Tspmrq-zz4VFtBk/view?usp=sharing" },
+            { name: "慈濟大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1q5z-qIv1txyrj92keUmcxvvQfnBhJYfX/view?usp=sharing" },
+            { name: "大同大學*", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1WJXGIP1pePIaAMdSOdzJ2gjsfpZb5738/view?usp=sharing" },
+            { name: "長榮大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1gPF3hH8yvqbbbeM1maRg63sFNF9nyerF/view?usp=sharing" },
+            { name: "玄奘大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/108KATbwFHPCJM8aVR2UZguNQsqc0malW/view?usp=sharing" },
+            { name: "聯合大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1Y8rkgXctU7IvMpZ8ua9apiT-YJGvDthv/view?usp=sharing" },
+            { name: "北醫大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/18t3EKCnqHLlkqf-k-wFr8ZSSv7zePAs6/view?usp=sharing" },
+            { name: "開南大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/19QEkrYi0Z3_Ld3Cxq3h3M1alPGlGnKdP/view?usp=sharing" },
+            { name: "佛光大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/16ErQ3P4mPoDT2SypYIUKFSsmTQ4Uj-yd/view?usp=sharing" },
+            { name: "大葉大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1XQoCTVt2DlQx0LcSthWxedfdyW-hcO_Z/view?usp=sharing" },
+            { name: "中信金融管理", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1hNfiiieOOtxKeytz1lDi58hvXmkRd0at/view?usp=sharing" },
+            { name: "馬偕醫學院", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/19q71Wb13UhSg-NqIR4BoxPnsw87Ftei5/view?usp=sharing" },
+            { name: "法鼓文理學院", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/19q71Wb13UhSg-NqIR4BoxPnsw87Ftei5/view?usp=sharing" },
+            { name: "康寧大學", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1-vhDDy_JADk0nOP22oRuX6_BSPJyrp7f/view?usp=sharing" },
+            { name: "勤益科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1-T1ZEoji2jx366JINWkP1GFk2dcQND8n/view?usp=sharing" },
+            { name: "中科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1Fe7VYfQ4bLLW0CCi-_jbSOy-jdV_Iq0V/view?usp=sharing" },
+            { name: "屏科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1tFqtJzZFezpORo6-39wV_JrSB-0yG8VE/view?usp=sharing" },
+            { name: "澎科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1ANQWDVkeB2_z7lJ63hqjd8HWhIlCfXUr/view?usp=sharing" },
+            { name: "台北護理", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1EP5r_2ZvakZ3tqPhO1no1ZoSbXptaF_H/view?usp=sharing" },
+            { name: "台北商業", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1xsD2i8KE7GVyBDfFd0LTDAqGaqOEJGVn/view?usp=sharing" },
+            { name: "高雄科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1H8Kl7VEZSmMEHwCQm7Br7AojfpKF5YzQ/view?usp=sharing" },
+            { name: "台灣戲曲", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/1W8Wq9tOmV7vyesVkpEfBkTYsnP0oRfVe/view?usp=sharing" },
+            { name: "朝陽科大", reg: "-", docDeadline: "-", exam: "-", hasExam: false, link: "https://drive.google.com/file/d/17FwP4D3onLn8clUrJ_GGB7KnX-6SWIcD/view?usp=sharing" }
+        ];
+
+        let currentView = 'card';
+
+        function renderContent(dataToRender) {
+            const cardContainer = document.getElementById('cardContainer');
+            const tableBody = document.getElementById('tableBody');
+            const noResults = document.getElementById('noResults');
+            const schoolCount = document.getElementById('schoolCount');
+
+            if (!cardContainer || !tableBody || !schoolCount) return;
+
+            schoolCount.textContent = `共 ${dataToRender.length} 校`;
+
+            if (dataToRender.length === 0) {
+                cardContainer.innerHTML = '';
+                tableBody.innerHTML = '';
+                if (noResults) noResults.classList.remove('hidden');
+                return;
+            }
+
+            if (noResults) noResults.classList.add('hidden');
+
+            // Render Cards
+            cardContainer.innerHTML = dataToRender.map(school => `
+                <div class="school-card bg-white rounded-2xl p-5 border ${school.hasExam ? 'border-amber-300 bg-amber-50/30' : 'border-slate-200'} shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100">115寒轉</span>
+                            ${school.hasExam ? '<span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800 border border-amber-200">有筆試</span>' : ''}
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-3">${school.name}</h4>
+                        ${school.reg !== '-' ? `
+                            <div class="space-y-1.5 text-xs text-slate-600 bg-white p-3 rounded-xl mb-3 border border-slate-100 shadow-sm">
+                                <div class="flex justify-between"><span>報名時間：</span><span class="font-semibold text-slate-800">${school.reg}</span></div>
+                                <div class="flex justify-between"><span>書審截止：</span><span class="font-semibold text-slate-800">${school.docDeadline}</span></div>
+                                <div class="flex justify-between"><span>筆試時間：</span><span class="font-semibold text-amber-700">${school.exam}</span></div>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-slate-400">${school.reg !== '-' ? '已有詳細時程' : '詳見官方簡章說明'}</span>
+                        <a href="${school.link}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition shadow-sm">
+                            <span>查看簡章</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Table Rows
+            tableBody.innerHTML = dataToRender.map(school => `
+                <tr class="transition h-12 ${school.hasExam ? 'bg-amber-50/70 hover:bg-amber-100/60 font-medium' : 'hover:bg-slate-50'}">
+                    <td class="py-3 px-4 font-semibold text-slate-900 flex items-center justify-center gap-2">
+                        ${school.hasExam ? '<span class="w-2 h-2 rounded-full bg-amber-500"></span>' : ''}
+                        ${school.name}
+                    </td>
+                    <td class="py-3 px-4 text-slate-600">${school.reg}</td>
+                    <td class="py-3 px-4 text-slate-600">${school.docDeadline}</td>
+                    <td class="py-3 px-4 text-slate-600">${school.exam}</td>
+                    <td class="py-3 px-4">
+                        <a href="${school.link}" target="_blank" rel="noopener noreferrer" 
+                           class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-full transition shadow-sm">
+                            查看簡章
+                        </a>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function toggleView(view) {
+            currentView = view;
+            const cardContainer = document.getElementById('cardContainer');
+            const tableContainer = document.getElementById('tableContainer');
+            const cardViewBtn = document.getElementById('cardViewBtn');
+            const tableViewBtn = document.getElementById('tableViewBtn');
+
+            if (view === 'card') {
+                cardContainer.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                cardViewBtn.className = "p-2 rounded-lg bg-blue-600 text-white transition shadow-sm";
+                tableViewBtn.className = "p-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition shadow-sm";
+            } else {
+                cardContainer.classList.add('hidden');
+                tableContainer.classList.remove('hidden');
+                tableViewBtn.className = "p-2 rounded-lg bg-blue-600 text-white transition shadow-sm";
+                cardViewBtn.className = "p-2 rounded-lg bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 transition shadow-sm";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent(schoolsData);
+
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const query = e.target.value.toLowerCase().trim();
+                    const filtered = schoolsData.filter(school => 
+                        school.name.toLowerCase().includes(query)
+                    );
+                    renderContent(filtered);
+                });
+            }
+        });
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) searchInput.value = '';
+            renderContent(schoolsData);
+        }
+    </script>
+</body>
+</html>

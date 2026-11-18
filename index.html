@@ -308,28 +308,38 @@
             `;
             }).join('');
 
-            // Render Table Rows
+ // Render Table Rows
             tableBody.innerHTML = dataToRender.map(school => {
+                const isSuspended = school.isSuspended;
                 const hasTime = school.reg !== '-' || school.docDeadline !== '-' || school.exam !== '-';
-                const isAvailable = hasTime && school.hasBrochure;
+                const isAvailable = !isSuspended && hasTime && school.hasBrochure;
                 
-                const btnClass = isAvailable 
-                    ? "bg-blue-600 hover:bg-blue-700 text-white" 
-                    : "bg-slate-200 text-slate-400 cursor-not-allowed pointer-events-none";
+                const btnClass = isSuspended 
+                    ? "bg-slate-200 text-slate-400 cursor-not-allowed pointer-events-none" 
+                    : (isAvailable ? "bg-blue-600 hover:bg-blue-700 text-white" : "bg-slate-200 text-slate-400 cursor-not-allowed pointer-events-none");
                 
-                const btnText = isAvailable ? "查看簡章" : "尚未公告";
+                const btnText = isSuspended ? "已停招" : (isAvailable ? "查看簡章" : "尚未公告");
+                const rowBg = isSuspended ? 'bg-slate-100/80 text-slate-400' : (school.hasExam ? 'bg-amber-50/70 hover:bg-amber-100/60 font-medium' : 'hover:bg-slate-50');
 
                 return `
-                <tr class="transition h-12 ${school.hasExam ? 'bg-amber-50/70 hover:bg-amber-100/60 font-medium' : 'hover:bg-slate-50'}">
-                    <td class="py-3 px-4 font-semibold text-slate-900">
+                <tr class="transition h-12 ${rowBg}">
+                    <td class="py-3 px-4 font-semibold ${isSuspended ? 'text-slate-500' : 'text-slate-900'}">
                         <div class="inline-flex items-center justify-center gap-2">
                             ${school.hasExam ? '<span class="w-2 h-2 rounded-full bg-amber-500"></span>' : ''}
                             ${school.name}
                         </div>
                     </td>
-                    <td class="py-3 px-4 text-slate-600">${school.reg}</td>
-                    <td class="py-3 px-4 text-slate-600">${school.docDeadline}</td>
-                    <td class="py-3 px-4 text-slate-600">${school.exam}</td>
+                    ${isSuspended ? `
+                        <td colspan="3" class="py-3 px-4 text-center">
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-700 border border-rose-200">
+                                115學年度起暫停辦理寒假轉學考招生
+                            </span>
+                        </td>
+                    ` : `
+                        <td class="py-3 px-4 text-slate-600">${school.reg}</td>
+                        <td class="py-3 px-4 text-slate-600">${school.docDeadline}</td>
+                        <td class="py-3 px-4 text-slate-600">${school.exam}</td>
+                    `}
                     <td class="py-3 px-4">
                         <a href="${isAvailable ? school.link : '#'}" ${isAvailable ? 'target="_blank" rel="noopener noreferrer"' : ''} 
                             class="inline-block text-xs px-3 py-1.5 rounded-full transition ${btnClass}">
@@ -339,7 +349,6 @@
                 </tr>
             `;
             }).join('');
-        }
 
         function toggleView(view) {
             currentView = view;
